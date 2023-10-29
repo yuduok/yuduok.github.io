@@ -105,7 +105,7 @@
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div id="home-head">
-    <div id="home-background" ref="homeBackground" data-images="/images/background.jpg,/images/background2.jpg,/images/background3.jpg"></div>
+    <div id="home-background" ref="homeBackground" data-images="/images/background4.png,/images/background2.jpg,/images/background3.jpg"></div>
     <div id="home-info" @click="homeClick">
         <span class="loop"></span>
         <span class="loop"></span>
@@ -164,37 +164,37 @@ export default &#123;&#125; //默认导出
 <h1 id="import-和-require的区别"><a href="#import-和-require的区别" class="headerlink" title="import 和 require的区别"></a>import 和 require的区别</h1><p>了解了import和require的作用之后，就可以着手了解二者之间的区别了。</p>
 <p>为了弄清楚二者的区别，先引入一个例子，本文使用vue当中v-bind的image绑定来说明。</p>
 <h2 id="vue中v-bind的动态绑定图片问题"><a href="#vue中v-bind的动态绑定图片问题" class="headerlink" title="vue中v-bind的动态绑定图片问题"></a>vue中v-bind的动态绑定图片问题</h2><p>在vue中，如果我们使用以下代码</p>
-<pre><code class="vue">//动态添加静态地址
+<pre><code class="html">//动态添加静态地址
 &lt;template&gt;
-    &lt;img :src=&quot;./images/avatar.jpg&quot; alt=&quot;avatar&quot;&gt;
+    &lt;img :src=&quot;./images/ima.jpg&quot; alt=&quot;avatar&quot;&gt;
 &lt;/template&gt;
 
 //编译后在控制台看源码
 //会发现这张图片无法加载，因为源码中的地址没有被成功解析
-&lt;img src=&quot;./images/avatar.jpg&quot; alt=&quot;avatar&quot;&gt;
+&lt;img src=&quot;/images/ima.jpg&quot; alt=&quot;avatar&quot;&gt;
 </code></pre>
 <p><strong>动态</strong>添加中的src最终被解析成<strong>静态</strong>的字符地址。网页运行时，会按照这个地址去读取资源，因此无法正确显示图片。</p>
 <p>那为何按照这个静态地址去读取资源就无法正确显示呢？这时候我们对比一下静态添加的代码。</p>
-<pre><code class="vue">//静态添加静态地址
+<pre><code class="html">//静态添加静态地址
 &lt;template&gt;
-    &lt;img src=&quot;./images/avatar.jpg&quot; alt=&quot;avatar&quot;&gt;
+    &lt;img src=&quot;./images/ima.jpg&quot; alt=&quot;avatar&quot;&gt;
 &lt;/template&gt;
 
 //编译后在控制台看源码
 //图片成功被加载
-&lt;img src=&quot;/images/avatar.6c137b82.jpg&quot; alt=&quot;avatar&quot;&gt;
+&lt;img src=&quot;/images/ima.6c137b82.jpg&quot; alt=&quot;avatar&quot;&gt;
 </code></pre>
 <p>可以看到图片被正确加载但是图片路径和名称发生了变化。</p>
 <p>那么我们可以得知，编译后，所以资源文件进行了打包，动态添加的静态地址却没有被打包，因此无法正确被引用。那么我们只要稍微更改一下代码，在动态添加中加入require即可。</p>
-<pre><code class="vue">&lt;template&gt;
-    &lt;img :src=&quot;require(&#39;./images/avatar.jpg&#39;)&quot; alt=&quot;avatar&quot;&gt;
+<pre><code class="html">&lt;template&gt;
+    &lt;img :src=&quot;require(&#39;./images/ima.jpg&#39;)&quot; alt=&quot;avatar&quot;&gt;
 &lt;/template&gt;
 
 //成功显示
-&lt;img src=&quot;./images/avatar.6c137b82.jpg&quot; alt=&quot;avatar&quot;&gt;
+&lt;img src=&quot;/images/ima.6c137b82.jpg&quot; alt=&quot;avatar&quot;&gt;
 </code></pre>
 <p>那么为什么加上require就可以了呢？那么我们就要了解require是什么。</p>
-<h2 id="再看import-和-require"><a href="#再看import-和-require" class="headerlink" title="再看import 和 require"></a>再看import 和 require</h2><p>import是ES6引入的一个特性，允许你以声明式的方式导入其他模块中的内容，详见[MDN-import](<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import">import - JavaScript | MDN (mozilla.org)</a>)</p>
+<h2 id="再看import-和-require"><a href="#再看import-和-require" class="headerlink" title="再看import 和 require"></a>再看import 和 require</h2><p>import是ES6引入的一个特性，允许你以声明式的方式导入其他模块中的内容，详见<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import">MDN-import</a></p>
 <p>require是一个nodejs方法，用于引入模块，JSON或本地文件。</p>
 <p>从上面的例子可以看出，require是一种动态执行的函数，而反之，import语句是静态执行的。</p>
 <h3 id="静态执行和动态执行"><a href="#静态执行和动态执行" class="headerlink" title="静态执行和动态执行"></a>静态执行和动态执行</h3><p><em><strong>静态执行</strong></em></p>
@@ -202,7 +202,7 @@ export default &#123;&#125; //默认导出
 <p><em><strong>动态执行</strong></em></p>
 <p>而require是在执行的时候才能确认所需要加载的模块。也就是说，在执行这部分代码时，js引擎才会去动态分析所需要的模块有哪些，并去加载，同时也不会在模块内部创建一个局部作用域，这意味着<strong>require导入的变量是可以提升的</strong>。</p>
 <p><em><strong>关于变量提升</strong></em></p>
-<p>关于变量提升这里不再赘述，如果不是很了解，我推荐一篇文章可以帮助你快速理解，这涉及到了<strong>js的编译过程</strong>。[浅谈JavaScript变量提升](<a target="_blank" rel="noopener" href="https://juejin.cn/post/7007224479218663455">浅谈 JavaScript 变量提升 - 掘金 (juejin.cn)</a>)</p>
+<p>关于变量提升这里不再赘述，如果不是很了解，我推荐一篇文章可以帮助你快速理解，这涉及到了<strong>js的编译过程</strong>。<a target="_blank" rel="noopener" href="https://juejin.cn/post/7007224479218663455">浅谈JavaScript变量提升</a></p>
 <p>因此<strong>总结</strong></p>
 <ul>
 <li><p><code>import</code>语句是静态执行的，因为在编译阶段就能够确定所导入的模块，从而在运行时快速加载这些模块。</p>
@@ -251,8 +251,12 @@ module.exports = Object.assign(&#123;&#125;, config);
 </li>
 </ol>
 <h1 id="文末鸣谢"><a href="#文末鸣谢" class="headerlink" title="文末鸣谢"></a>文末鸣谢</h1><p>本文参考了<strong>掘金</strong>上的两篇文章，让我收获良多，在文末进行感谢！</p>
-<p> <a href="%5B%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3js%E4%B8%AD%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97import%E3%80%81import()%E5%92%8Crequire(">一文了解js中导入模块import、import()和require()的区别</a>的区别 - 掘金 (juejin.cn)](<a target="_blank" rel="noopener" href="https://juejin.cn/post/7205487413350498360">https://juejin.cn/post/7205487413350498360</a>))</p>
-<p>[vue中动态引入图片为什么要是require， 你不知道的那些事](<a target="_blank" rel="noopener" href="https://juejin.cn/post/7159921545144434718">vue中动态引入图片为什么要是require， 你不知道的那些事 - 掘金 (juejin.cn)</a>)</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7205487413350498360">一文了解js中导入模块import、import()和require()的区别</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7159921545144434718">vue中动态引入图片为什么要是require， 你不知道的那些事</a></p>
+</li>
+</ul>
 
             
         </div>
@@ -267,7 +271,7 @@ module.exports = Object.assign(&#123;&#125;, config);
         
         <span class="tag">
             
-            <a href="/tags/js-vue/" style="color: #03a9f4">js vue</a>
+            <a href="/tags/js/" style="color: #03a9f4">js</a>
         </span>
         
     </div>
@@ -306,7 +310,16 @@ module.exports = Object.assign(&#123;&#125;, config);
     </div>
     <div class="post-tags">
         
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
         
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/life/" style="color: #00bcd4">life</a>
+        </span>
         
     </div>
     <a href="/2023/10/27/welcome-my-blog/" class="go-post">阅读全文</a>
